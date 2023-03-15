@@ -28,26 +28,30 @@ last_week = today - timedelta(days=7)
 
 # get all releases for the last 7 days
 releases = repo.get_releases()
-recent_releases = [release for release in releases if release.published_at.date() > last_week]
-
-# loop through recent releases and print their version and body details
-
-email_body = ""
-for release in recent_releases:
-    email_body += f"\n\tRelease : {release.title}\n"
-    email_body += f"\tVersion   : {release.tag_name}\n"
-    email_body += f"\tReleas URL: = {release.html_url}\n"
-    email_body += f"\tBody      : {release.body}\n\t------------------------------------------"
-
-# set up the email message
-
-context = ssl.create_default_context()
-with smtplib.SMTP(smtp_server, port) as server:
-    server.starttls(context=context)
-    server.login(sender_email, password)
+if releases.totalCount == 0:
+    print("No releases found.")
+else:
+    recent_releases = [release for release in releases if release.published_at.date() > last_week]
     
-    # send the message
-    message = ("Subject: NEW RELEASE OF LAST WEEK. \n\nHello Team,\n\nWe're pleased to announce the availability of a new release of {0} \nHere are the details:{1} \nThank you for your interest in {2}!\n\nBest regards,\nTeam ABC".format(repository_name,email_body,repository_name))
-    print(message)
-    recipient_email = "sahilvandra.softvan@gmail.com"
-    server.sendmail(sender_email, recipient_email, message)
+    # loop through recent releases and print their version and body details
+    
+    email_body = ""
+    for release in recent_releases:
+        email_body += f"\n\tRelease : {release.title}\n"
+        email_body += f"\tVersion   : {release.tag_name}\n"
+        email_body += f"\tReleas URL: = {release.html_url}\n"
+        email_body += f"\tBody      : {release.body}\n\t------------------------------------------"
+    
+    # set up the email message
+    
+    context = ssl.create_default_context()
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.starttls(context=context)
+        server.login(sender_email, password)
+        
+        # send the message
+        message = ("Subject: NEW RELEASE OF LAST WEEK. \n\nHello Team,\n\nWe're pleased to announce the availability of a new release of {0} \nHere are the details:{1} \nThank you for your interest in {2}!\n\nBest regards,\nTeam ABC".format(repository_name,email_body,repository_name))
+        print(message)
+        recipient_email = "sahilvandra.softvan@gmail.com"
+        server.sendmail(sender_email, recipient_email, message)
+    
