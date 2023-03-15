@@ -1,0 +1,29 @@
+name: Send Latest Release Details
+
+on: push
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    outputs:
+      message_body: ${{ steps.format_details.outputs.message_body }}
+      output_body: ${{ steps.read-file.outputs.output_body }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Installation
+      run: |
+        pip install PyGithub
+
+    - name: send Email
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB}}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      run: python final_mail.py
+
+        
