@@ -19,7 +19,7 @@ g = Github(os.environ['GITHUB_TOKEN'])
 
 
 # get the Python repository by name
-repo = g.get_repo("smit-darji/RELESE_EMAIL")
+repo = g.get_repo("smit-darji/On_Github_RELEASE_EMAIL")
 
 repository_name = str(repo.full_name)
 
