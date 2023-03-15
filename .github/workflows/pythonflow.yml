@@ -1,7 +1,10 @@
 name: Send Latest Release Details
 
-on: push
 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 09 * * */5'  #UTC: At 07:00 PM, every 5 days of the week
 jobs:
   send_email:
     runs-on: ubuntu-latest
